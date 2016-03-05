@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script type="text/javascript">
+		function checkserAgent(){
+		var userAgentInfo=navigator.userAgent;
+		var userAgentKeywords=new Array("Android", "iPhone" ,"SymbianOS", "Windows Phone", "iPad", "iPod", "MQQBrowser");
+		var flag=false;
+		if(userAgentInfo.indexOf("Windows NT")==-1){
+		flag=true;
+		}
+		return flag;
+		}
+		if(checkserAgent()){
+		document.location.href="http://people.cs.nctu.edu.tw/~cwlin6104400/mobile.html";
+		}
+		</script>
+	</head>
+	<body>
+		<label>
+			this is PC version
+		</label>
+	</body>
+</html>

@@ -1,0 +1,2247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="semantic.js"></script>
+		<script src="jquery.movingboxes.js"></script>
+		<script type="text/javascript">
+		function checkserAgent(){
+		var userAgentInfo=navigator.userAgent;
+		var userAgentKeywords=new Array("Android", "iPhone" ,"SymbianOS", "Windows Phone", "iPad", "iPod", "MQQBrowser");
+		var flag=false;
+		if(userAgentInfo.indexOf("Windows NT")==-1){
+		flag=true;
+		}
+		return flag;
+		}
+		if(checkserAgent()){
+		document.location.href="https://docs.google.com/forms/d/1Wv8wRSAOIfTXQ-Mt23ZGsY0ggYEocI0EjB2oSsep1qU/viewform?usp=send_form";
+		}
+		</script>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<meta name="description" content="2015交大府城週-『南人都愛呷這味 友誰為他不沉醉』">
+		<meta name="keywords" content="2015交大府城週">
+		<meta name="author" content="交大資工06林承緯">
+		<title>2015交大府城週-『南人都愛呷這味 友誰為他不沉醉』</title>
+		<link rel="stylesheet" type="text/css" href="semantic.css">
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<link href="movingboxes.css" rel="stylesheet">
+		<!--<link href="css/movingboxes.css" rel="stylesheet">-->
+		<script>
+		var  browserWidth = window.innerWidth;
+			$(document).ready(function(){
+				var str = ["芒果乾","手指泡芙","依蕾特布丁","依蕾特乳酪塔","西井村滷味","大灣花生糖","章成麥芽餅","瓜瓜園"];
+				var sumInCart = 0;
+				var cart = [0,0,0,0,0,0,0,0];
+				var scart = [0,0,0,0,0,0,0,0];
+				var mango = [0,0,0];
+				var puff = [0];
+				var pudding = [0,0,0,0];
+				var cheeseTower = [0,0,0];
+				var snack = [0,0,0,0,0];
+				var peanut = [0,0,0,0];
+				var cookies = [0];
+				var yam = [0];
+				var currentCart = 0;
+				var ListExist = 0;
+				var money = 0;
+				var data=["null","null","null","null","null","null","null","null"];
+				/*****************************************************
+				*					movingBoxes init				 *
+				******************************************************/
+				$('#slider').movingBoxes({
+					width: $(document).width()-200,
+					panelWidth: 0.55,
+					reducedSize: 0.3,
+					hashTags:	true,
+					startPanel   : 2,      // start with this panel
+					wrap         : true,  // if true, the panel will infinitely loop
+					buildNav     : true,   // if true, navigation links will be added
+					navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+					//navFormatter : function(index, panel){  return panel.find('p a').text();}
+				});
+				
+				
+				
+				$("#foodindex .segment").transition('hide');
+				var hei = $(document).height();
+				var onloading  = 0;
+				var boxExist = 0;
+				$('.ui.dropdown')
+				  .dropdown({
+					on: 'hover'
+				  });
+				var t = 1000;
+				
+				
+				
+				/**************************************************
+				*						結帳step1				  *
+				***************************************************/
+				/*$(".item[name='shop']").click(function(){
+					$('.shopstep').transition('hide');
+					$('.shopform').transition('hide');
+					$('#shoptable').transition('hide');
+					$('.shopacc').transition('hide');
+					$('.report').transition('hide');
+					$('#changeList').transition('hide');
+					$('.fb-comments').css('display','none');
+					$("#yt").hide();
+					$(".obj").remove();
+					$('.mbc').transition('hide');
+					if(onloading== 0){
+						$("#foodindex .segment").css("marginRight","3000px");
+						$("#foodindex .segment .wrapper").transition('hide');
+						$("#foodindex .segment").delay(25).queue(function(next){
+							$("#foodindex .segment").transition('fade down');
+							$("#foodindex .segment").animate({height: hei-220},"slow");
+							$("#foodindex .segment").animate({marginRight: '30px'},"slow");
+							onloading = 1;
+							next();
+						});
+					}
+					if(boxExist==1){
+						$("#foodindex .segment .wrapper").transition('fade left');
+						boxExist = 0;
+					}
+					$("#foodindex .segment").animate({height: '1px'},"slow");
+					$("#foodindex .segment").animate({height: hei-220},"slow");
+					$(".item.active").removeClass('active');
+					$(this).addClass('active');
+					//////////////////////////前置作業//////////////////////////
+					$("#foodindex .segment").delay(500).queue(function(next){
+						
+						$('#prog').progress({total: 8});
+						$('.shopstep').transition('hide').transition('fade');
+						$('.shopform').transition('hide').transition('fade');
+						
+						next();
+					});
+				});*/
+				
+				/**************************************************
+				*				測試input						  *
+				***************************************************/
+				var dataNum = 0;
+				var progNum = 0;
+				$(document).on('change','.form :input',function(){
+					var index = 0;
+					dataNum = 0;
+					$('.form :input').each(function(){
+						var test = $(this).val();
+						if(test.indexOf("*")!=-1||test.indexOf("/")!=-1||test.indexOf("\"")!=-1||test.indexOf("\'")!=-1)
+						{
+							window.alert("請勿輸入無效資料");
+							$(this).val("");
+							return;
+						}
+						data[index] = $(this).val();
+						if(data[index]!="")
+							dataNum++;
+						index++;
+					});
+					if(dataNum>progNum)
+					{
+						$('#prog').progress('increment');
+						progNum++;
+					}
+				});
+				
+				/************************************************************
+				*					結帳step2								*
+				*************************************************************/
+				$(document).on('click','.form #infosub',function(){
+					
+					if(dataNum<8)
+					{
+						$('.ui.form .field').each(function(){
+							var f = $(this).find('.n').text();
+							var i = $(this).find('input').val();
+							$(this).find('.red').remove();
+							if(i==""||i=="null")
+							{
+								$(this).addClass('error');
+								var l = $("<div class='ui pointing red label'></div>");
+								l.text("Please enter your "+f);
+								$(this).append(l);
+							}
+							else
+							{
+								$(this).removeClass('error');
+								$(this).find('.red').remove();
+							}	
+						});
+						return;
+					}
+					else
+					{
+						var xmlhttp = new XMLHttpRequest();
+						xmlhttp.onreadystatechange = function(){
+							if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+							{
+								var ch = xmlhttp.responseText;
+								if(ch>=1)
+								{
+									$('#warn')
+									.modal('setting', 'transition', 'horizontal flip').modal({
+										closable :false,
+										onDeny: function(){
+											location.reload();
+										}
+									}).modal('show');
+									ListExist = 1;
+								}
+									$('.shopform').transition({
+										animation: 'scale',
+										duration : '1s'
+									});
+									var cnt = 0;
+									var dis = 0;
+									var isf = true;
+									$('.checkbox').checkbox('uncheck');
+									$('#shoptable tr').each(function(){
+										if(isf==true)
+										{
+											isf = false;
+										}
+										else{
+											if(cart[dis]==0)
+											{
+												var tmp = 0;
+												$(this).find('td').each(function(){
+													if(tmp!=1)
+														$(this).addClass('disabled');
+													tmp++;
+												});
+											}
+											else if(dis<8)
+											{
+												var inc=0;
+												var total = 0;
+												switch(dis)
+												{
+													case 0:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(mango[inc]);
+															total+=parseInt(mango[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														var money = parseInt(mango[0])*150+parseInt(mango[1])*130+parseInt(mango[2])*160;
+														$(this).find('.mtotal').text(money);
+														break;
+													case 1:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(puff[inc]);
+															total+=parseInt(puff[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(total*180);
+														break;
+													case 2:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(pudding[inc]);
+															total+=parseInt(pudding[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(Math.ceil(total/3)*100);
+														break;
+													case 3:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(cheeseTower[inc]);
+															total+=parseInt(cheeseTower[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(total*50);
+														break;
+													case 4:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(snack[inc]);
+															total+=parseInt(snack[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(total*40);
+														break;
+													case 5:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(peanut[inc]);
+															total+=parseInt(peanut[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(total*110);
+														break;
+													case 6:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(cookies[inc]);
+															total+=parseInt(cookies[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(total*120);
+														break;
+													case 7:
+														$(this).find('.input').each(function(){
+															$(this).find('input').val(yam[inc]);
+															total+=parseInt(yam[inc]);
+															inc++;
+														});
+														$(this).find('.ctotal').text(total);
+														$(this).find('.mtotal').text(total*110);
+														break;
+													default:
+														window.alert('table error');
+														break;
+												}
+											}
+											dis++;
+										}
+									});
+									money = 0;
+									$('.mtotal').each(function(){
+										if($(this).text()!="")
+										{
+											var n = parseInt($(this).text());
+											money += n;
+										}
+									});
+									$('#Totalmoney').text("總金額: "+money);
+									$('.checkbox').each(function(){
+										if(cart[cnt]==1)
+											$(this).checkbox('check');
+										cnt++;
+									});
+									$('.shopform').delay(1000).queue(function(next){
+										$('#s1').removeClass('active');      
+										$('#s1').addClass('completed');
+										$('#s2').removeClass('disabled');
+										$('#s2').addClass('active');
+										$('#shoptable').transition('hide')
+												.transition({
+											animation: 'scale',
+											duration: '1s'
+											});
+										next();
+									});
+							}
+						}
+						xmlhttp.open("GET", "check.php?check=" + data[5], true);
+						xmlhttp.send();
+					}
+				});
+				
+				
+				/************************************************************
+				*					訂單按鈕狀態變更						*
+				*************************************************************/
+				$('.checkbox').click(function(){
+					 var state = $(this).checkbox('is checked');
+					 if(state==true)
+					 {
+						var item = $(this).parents('tr').find('td:first').text();
+						switch(item)
+						{
+							case '芒果乾':
+								cart[0] = 0;
+							break;
+							case '手指泡芙':
+								cart[1] = 0;
+							break;
+							case '依蕾特布丁':
+								cart[2] = 0;
+							break;
+							case '依蕾特乳酪塔':
+								cart[3] = 0;
+							break;
+							case '西井村滷味':
+								cart[4] = 0;
+							break;
+							case '大灣花生糖':
+								cart[5] = 0;
+							break;
+							case '章成麥芽餅':
+								cart[6] = 0;
+							break;
+							case '瓜瓜園':
+								cart[7] = 0;
+							break;
+						}
+						$(this).parent().siblings().addClass('disabled');
+						$(this).parent().siblings().find("input").val("");
+						$(this).parents('tr').find(".ctotal").text("");
+						$(this).parents('tr').find(".mtotal").text("");
+						money = 0;
+						$('.mtotal').each(function(){
+						if($(this).text()!="")
+						{
+							var n = parseInt($(this).text());
+							money += n;
+						}
+						});
+						$('#Totalmoney').text("總金額: "+money);
+						 }
+					 else
+					 {
+						var item = $(this).parents('tr').find('td:first').text();
+						switch(item)
+						{
+							case '芒果乾':
+								cart[0] = 1;
+							break;
+							case '手指泡芙':
+								cart[1] = 1;
+							break;
+							case '依蕾特布丁':
+								cart[2] = 1;
+							break;
+							case '依蕾特乳酪塔':
+								cart[3] = 1;
+							break;
+							case '西井村滷味':
+								cart[4] = 1;
+							break;
+							case '大灣花生糖':
+								cart[5] = 1;
+							break;
+							case '章成麥芽餅':
+								cart[6] = 1;
+							break;
+							case '瓜瓜園':
+								cart[7] = 1;
+							break;
+						}
+						$(this).parent().siblings().removeClass('disabled');
+						$(this).parent().siblings().find("input").val("");
+						$(this).parents('tr').find(".ctotal").text("");
+						$(this).parents('tr').find(".mtotal").text("");
+					 }
+				});
+				
+				/************************************************************
+				*					step2返回上一步							*
+				*************************************************************/
+				$('#tableBack').click(function(){
+					$('#shoptable').transition({
+							animation: 'scale',
+							duration : '1s'
+						});
+					$('#shoptable').delay(500).queue(function(next){
+						$('#s2').removeClass('active');             
+						$('#s1').removeClass('disabled');
+						$('#s1').addClass('active');
+						$('.shopform').transition({
+							animation: 'scale',
+							duration : '1s'
+						});
+						next();
+					});
+				});
+				
+				/************************************************************
+				*					step2下一步								*
+				*************************************************************/
+				$('#tableConfirm').click(function(){
+					var cnt = 0;
+					var allen = true;
+					$('table tbody tr').each(function()
+					{
+						var allz = true;
+						var state = $(this).find('.checkbox').checkbox('is checked');
+						if(state==false)
+						{
+							cart[cnt] = 0;
+							switch(cnt)
+							{
+								case 0:
+									for(var i=0;i<mango.length;i++) mango[i] = 0;
+								break;
+								case 1:
+									for(var i=0;i<puff.length;i++) puff[i] = 0;
+								break;
+								case 2:
+									for(var i=0;i<pudding.length;i++) pudding[i] = 0;
+								break;
+								case 3:
+									for(var i=0;i<cheeseTower.length;i++) cheeseTower[i] = 0;
+								break;
+								case 4:
+									for(var i=0;i<snack.length;i++) snack[i] = 0;
+								break;
+								case 5:
+									for(var i=0;i<peanut.length;i++) peanut[i] = 0;
+								break;
+								case 6:
+									for(var i=0;i<cookies.length;i++) cookies[i] = 0;
+								break;
+								case 7:
+									for(var i=0;i<yam.length;i++) yam[i] = 0;
+								break;
+								default:
+									window.alert('table pass error');
+							}
+							cnt++;
+						}
+						else{
+							var tmp = 0;
+							cart[cnt] = 1;
+							switch(cnt)
+							{
+								case 0:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											mango[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											mango[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});									
+								break;
+								case 1:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											puff[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											puff[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								case 2:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											pudding[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											pudding[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								case 3:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											cheeseTower[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											cheeseTower[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								case 4:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											snack[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											snack[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								case 5:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											peanut[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											peanut[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								case 6:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											cookies[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											cookies[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								case 7:
+									$(this).find('input').each(function(){
+										if($(this).val()=="")
+											yam[tmp] = 0;
+										else if($(this).val()=="on")
+											return;
+										else
+										{
+											yam[tmp] = $(this).val();
+											allz = false;
+										}
+										tmp++;
+									});	
+								break;
+								default:
+									window.alert('table pass error');
+							}
+							if(allz == true)
+							{
+								cart[cnt] = 0;
+								window.alert("訂單總數為0");
+								allen = false;
+								return false;
+							}
+							
+							cnt++;
+						}
+					});
+					var s=0;
+					for(var a=0;a<pudding.length;a++)
+						s+=parseInt(pudding[a]);
+					if(s%3!=0)
+					{
+						window.alert('布丁為三個一組喔~');
+						return;
+					}
+					if(allen==true)
+					{
+						money = 0;
+						$('.mtotal').each(function(){
+							if($(this).text()!="")
+							{
+								var n = parseInt($(this).text());
+								money += n;
+							}
+						});
+						$("#shopacc .item[name='name'] .description").text(data[0]);
+						$("#shopacc .item[name='studentid'] .description").text(data[1]);
+						$("#shopacc .item[name='department'] .description").text(data[2]);
+						$("#shopacc .item[name='grade'] .description").text(data[3]);
+						$("#shopacc .item[name='email'] .description").text(data[4]);
+						$("#shopacc .item[name='cellphone'] .description").text(data[5]);
+						$("#shopacc .item[name='dorm'] .description").text(data[6]);
+						$("#shopacc .item[name='room'] .description").text(data[7]);
+						$('#innershopmoney').text(money);
+						$('.dy').remove();
+						var title = $("<div class='title'><div>");
+						var content = $("<div class='content'><div>");
+						for(var i=0;i<8;i++)
+						{
+							if(cart[i]==1)
+							{
+								var ntitle = title.clone().text(str[i]);
+								var ncontent = content.clone();
+								switch(i)
+								{
+									case 0:
+										var s = "愛文: " + mango[0] +" | 凱特: "+mango[1]+" | 水果乾: "+mango[2];
+										ncontent.text(s);
+									break;
+									case 1:
+										var s = "手指泡芙: " + puff[0];
+										ncontent.text(s);
+									break;
+									case 2:
+										var s = "可可: " + pudding[0] +" | 芒果: "+pudding[1]+" | 芝麻: "+pudding[2]+" | 鮮奶: "+pudding[3];
+										ncontent.text(s);
+									break;
+									case 3:
+										var s = "檸檬: " + cheeseTower[0] +" | 蔓越莓: "+cheeseTower[1]+" | 芒果: "+cheeseTower[2];
+										ncontent.text(s);
+									break;
+									case 4:
+										var s = "豆干: " + snack[0] +" | 雞胗: "+snack[1]+" | 翅小腿: "+snack[2]+" | 雞翅膀: "+snack[3]+" | 冰雞爪凍: "+snack[4];
+										ncontent.text(s);
+									break;
+									case 5:
+										var s = "綜合: " + peanut[0] +" | 花生捲: "+peanut[1]+" | 顆粒花生糖+芝麻軟糖: "+peanut[2]+" | 芝麻軟糖: "+peanut[3];
+										ncontent.text(s);
+									break;
+									case 6:
+										var s = "麥芽餅: " + cookies[0];
+										ncontent.text(s);
+									break;
+									case 7:
+										var s = "瓜瓜園: " + yam[0];
+										ncontent.text(s);
+									break;
+								}
+								$('#innershopacc').append(ntitle);
+								$('#innershopacc').append(ncontent);
+							}
+						}
+						$('#shoptable').transition({
+						animation: 'scale',
+						duration : '1s'
+						});
+						$('#shoptable').delay(1000).queue(function(next){
+							$('#s2').removeClass('active');
+							$('#s2').addClass('completed');
+							$('#s3').addClass('active');
+							$('#s3').removeClass('disabled');
+							$('.shopacc').transition('hide').transition({
+							animation: 'scale',
+							duration : '1s'
+							});
+							next();
+						});
+					}
+				});
+
+				$('table :text').change(function(){
+					var sum = 0;
+					/*if($(this).val()!="")
+						sum+= parseInt($(this).val());*/
+					var item = $(this).parents('tr').find('td:first').text();
+					var m = [0,0,0];
+					var c1 = 0;
+					$(this).parents('tr').find('input:text').each(function(){
+						if($(this).val()!="")
+							sum+= parseInt($(this).val());
+						if(item == '芒果乾')
+							if($(this).val()!="")
+								m[c1] = parseInt($(this).val());
+							else
+								m[c1] = 0;	
+						c1++;
+					});
+					$(this).parents('tr').find('.ctotal').text(sum);
+					switch(item)
+					{
+						case '芒果乾':
+							var money = m[0]*150+m[1]*130+m[2]*160;
+							$(this).parents('tr').find('.mtotal').text(money);
+						break;
+						case '手指泡芙':
+							$(this).parents('tr').find('.mtotal').text(sum*180);
+						break;
+						case '依蕾特布丁':
+							var money = Math.ceil(sum/3) * 100;
+							$(this).parents('tr').find('.mtotal').text(money);
+						break;
+						case '依蕾特乳酪塔':
+							$(this).parents('tr').find('.mtotal').text(sum*50);
+						break;
+						case '西井村滷味':
+							$(this).parents('tr').find('.mtotal').text(sum*40);
+						break;
+						case '大灣花生糖':
+							$(this).parents('tr').find('.mtotal').text(sum*110);
+						break;
+						case '章成麥芽餅':
+							$(this).parents('tr').find('.mtotal').text(sum*120);
+						break;
+						case '瓜瓜園':
+							$(this).parents('tr').find('.mtotal').text(sum*110);
+						break;
+					}
+					money = 0;
+					$('.mtotal').each(function(){
+						if($(this).text()!="")
+						{
+							var n = parseInt($(this).text());
+							money += n;
+						}
+					});
+					$('#Totalmoney').text("總金額: "+money);
+				});
+	
+				/****************************************************
+				*				step3回上步							*
+				*****************************************************/
+				$('#accBack').click(function(){
+					$('.shopacc').transition({
+							animation: 'scale',
+							duration : '1s'
+					});
+					$('.shopacc').delay(1000).queue(function(next){
+						$('#shoptable').transition('hide');
+						$('#shoptable').transition({
+						animation: 'scale',
+						duration : '1s'
+						});
+						$('#s3').removeClass('active');
+						$('#s2').addClass('active')
+						$('#s2').removeClass('completed');
+						next();
+					});
+				});
+				
+				/****************************************************
+				*				送出訂單							*
+				*****************************************************/
+				$('#allConfirm').click(function(){
+					if(ListExist==0)
+					{
+						$('#phone').text(data[5]);
+						$('#finalConfirm')
+						.modal('setting', 'transition', 'horizontal flip').modal({
+								closable :false,
+								onApprove: function(){
+									$(this).addClass('loading');
+									var xmlhttp = new XMLHttpRequest();
+									xmlhttp.onreadystatechange = function(){
+										if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+										{
+											if(xmlhttp.responseText=="success")
+												window.alert("訂單已送出!\n如欲修改只需再次送出訂單即可\n網路預購請在現場擺攤時繳費");
+											else
+												window.alert(xmlhttp.responseText);
+											$('#shopLabel').remove();
+											location.reload();
+										}
+									}
+									xmlhttp.open("GET", "order.php?q=" + data+">"+mango+">"+puff+">"+pudding+">"+cheeseTower+">"+snack+">"+peanut+">"+cookies+">"+yam+">"+money, true);
+									xmlhttp.send();
+								}
+							}).modal('show');
+					}
+					else
+					{
+						$(this).addClass('loading');
+						var xmlhttp = new XMLHttpRequest();
+						xmlhttp.onreadystatechange = function(){
+							if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+							{
+								if(xmlhttp.responseText=="changed")
+									window.alert("訂單已修改");
+								else
+									window.alert(xmlhttp.responseText);
+								$('#shopLabel').remove();
+								location.reload();
+							}
+						}
+						xmlhttp.open("GET", "change.php?q=" + data+">"+mango+">"+puff+">"+pudding+">"+cheeseTower+">"+snack+">"+peanut+">"+cookies+">"+yam+">"+money, true);
+						xmlhttp.send();
+					}
+				});
+				
+				$(".item[name='fb']").click(function(){
+					$('.shopstep').transition('hide');
+					$('.shopform').transition('hide');
+					$('#shoptable').transition('hide');
+					$('.shopacc').transition('hide');
+					$('#changeList').transition('hide');
+					$('.report').transition('hide');
+					$('.fb-comments').css('display','none');
+					$('#yt').hide();
+					$(".obj").remove();
+					$('.mbc').transition('hide');
+					if(onloading== 0){
+						$("#foodindex .segment").css("marginRight","3000px");
+						$("#foodindex .segment .wrapper").transition('hide');
+						$("#foodindex .segment").delay(25).queue(function(next){
+							$("#foodindex .segment").transition('fade down');
+							$("#foodindex .segment").animate({height: hei-220},"slow");
+							$("#foodindex .segment").animate({marginRight: '30px'},"slow");
+							onloading = 1;
+							next();
+						});
+					}
+					if(boxExist==1){
+						$("#foodindex .segment .wrapper").transition('fade left');
+						boxExist = 0;}
+					$("#foodindex .segment").animate({height: '1px'},"slow");
+					$("#foodindex .segment").animate({height: hei-220},"slow");
+					$(".item.active").removeClass('active');
+					$(this).addClass('active');
+					//////////////////////////前置作業//////////////////////////
+					$("#foodindex .segment").delay(500).queue(function(next){
+						$('.fbclone').remove();
+						var fb = $('.fb-comments').clone();
+						fb.addClass('fbclone');
+						$("#foodindex .segment .pusher").append(fb);
+						fb.css('display','inline-block');
+						next();
+					});
+				});
+				$(".item[name='comment']").click(function(){
+					$('#report')
+					.modal('setting', 'closable', false)
+					.modal('setting', 'transition', 'horizontal flip')
+					.modal('show');
+				});
+				$('#report .approve').click(function(){
+					var tit = $("#report input[name='tit']").val();
+					var typ = $("#report input[name='reportType']").val();
+					var cont = $("#report textarea").val();
+					if(tit.indexOf("*")!=-1||tit.indexOf("/")!=-1||tit.indexOf("\"")!=-1||tit.indexOf("\'")!=-1)
+						return;
+					if(cont.indexOf("*")!=-1||cont.indexOf("/")!=-1||cont.indexOf("\"")!=-1||cont.indexOf("\'")!=-1)
+						return;
+					if(tit==""||typ==""||cont=="")
+						$('#report').append("<div class='ui red bottom left attached label'>請確實填寫各項資料</div>");
+					else
+					{
+						$('#report').addClass('loading');
+						var xmlhttp = new XMLHttpRequest();
+						xmlhttp.onreadystatechange = function(){
+							if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+							{
+								window.alert("感謝您的回報，我們將會盡快處理");
+								$("#report").removeClass("loading");
+								$('#report').modal('hide');
+							}
+						}
+						xmlhttp.open("GET", "comment.php?q=" +tit+"|"+typ+"|"+cont, true);
+						xmlhttp.send();
+					}
+				});
+				$('#report .deny').click(function(){
+					$('#report').modal('hide');
+				});
+				/****************************************************
+				*					main menu clicked				*
+				*****************************************************/
+				$(".tiered .main .item.btn").click(function(){
+				
+					//food index button generate
+					var showBtn = "訂購商品";
+					var dis = "熟食";
+					if($(this).text().match(showBtn)!=null && onloading==0)
+					{
+						progNum = 0;
+						$('.shopstep').transition('hide');
+						$('.shopform').transition('hide');
+						$('#shoptable').transition('hide');
+						$('.shopacc').transition('hide');
+						$('#changeList').transition('hide');
+						$('.report').transition('hide');
+						$('.fb-comments').css('display','none');
+						$("#yt").hide();
+						//$('.shopform').remove();
+						$(".obj").remove();
+						for(var i=0;i<str.length;i++){
+						var newObj = $("<div></div>");
+						var newBtn = $("<div></div>").text(str[i]);
+						newObj.addClass("item obj");
+						newBtn.addClass("fluid ui inverted orange button");
+						newObj.append(newBtn);
+						$(".tiered .sub .subBaseObject").before(newObj);
+						newObj.transition('hide').transition('fade down',t);
+						t +=400;
+						}
+						t = 1000;
+						////////////////////////////////////////////////////////
+						$("#foodindex .segment").css("marginRight","3000px");
+						$("#foodindex .segment .wrapper").transition('hide');
+						$('.mbc').transition('hide');
+						$("#foodindex .segment").delay(50).queue(function(next){
+						$("#foodindex .segment").transition('fade down');
+						$("#foodindex .segment").animate({height: hei-220},"slow");
+						$("#foodindex .segment").animate({marginRight: '30px'},"slow");
+							next();
+						});
+						$("#foodindex .segment .wrapper").delay(1700).queue(function(next){
+							$("#foodindex .segment .wrapper").transition('fade right');
+							$('.mbc').transition('fade right');
+							$('#slider').movingBoxes();
+							var slider = $('#slider').data('movingBoxes');
+							slider.options.width = $(window).width() -200; // make 50% browser width
+							slider.options.panelWidth = 0.55; // make 70% of wrapper width
+							next();
+							$('.sidebar').removeClass('left');
+							$('.sidebar').addClass('right');
+							onloading = 1;
+							boxExist = 1;
+						});
+					}
+					else if($(this).text().match(dis)!=null)
+					{
+						return false;
+					}
+					else if($(this).text().match(showBtn)!=null && onloading==1)
+					{
+						progNum = 0;
+						$('.shopstep').transition('hide');
+						$('.shopform').transition('hide');
+						$('#shoptable').transition('hide');
+						$('.shopacc').transition('hide');
+						$('#changeList').transition('hide');
+						$('.report').transition('hide');
+						$('.fb-comments').css('display','none');
+						$("#yt").hide();
+						//$('.shopform').remove();
+						$(".obj").remove();
+						for(var i=0;i<str.length;i++){
+							var newObj = $("<div></div>");
+							var newBtn = $("<div></div>").text(str[i]);
+							newObj.addClass("item obj");
+							newBtn.addClass("fluid ui inverted orange button");
+							newObj.append(newBtn);
+							$(".tiered .sub .subBaseObject").before(newObj);
+							newObj.transition('hide').transition('fade down',t);
+							t +=400;
+							}
+							t = 1000;
+						//////////////////////////////////////////////////////////
+						$("#foodindex .segment .wrapper").transition('hide');
+						$('.mbc').transition('hide');
+						$("#foodindex .segment").animate({height: '1px'},"slow");
+						$("#foodindex .segment").animate({height: hei-220},"slow");
+						$("#foodindex .segment .wrapper").delay(1700).queue(function(next){
+							$("#foodindex .segment .wrapper").transition('fade right');
+							$('.mbc').transition('fade right');
+							$('#slider').movingBoxes();
+							var slider = $('#slider').data('movingBoxes');
+							slider.options.width = $(window).width() -200; // make 50% browser width
+							slider.options.panelWidth = 0.55; // make 70% of wrapper width
+							next();
+							$('.sidebar').removeClass('left');
+							$('.sidebar').addClass('right');
+							onloading = 1;
+							boxExist = 1;
+						});
+					}
+					
+					
+					/*var newSidebar = $('<div></div>');
+					newSidebar.addClass('ui wide right fixed sidebar');
+					$('#foodindex .segment').append(newSidebar);*/
+					$("#foodindex .segment .ui.sidebar.right").sidebar({context: $('#foodindex .segment'),
+																		onHide: function(){$('.sidebar').transition('drop');
+																							$('.obj').css('pointer-events',"");
+																							$('.tiered .main .item').css('pointer-events',"");}});
+					
+					$('.obj').css('pointer-events',"none");
+					$('.btn').css("pointer-events","none");		//prevent animation lag from too much clicked
+					$(".tiered .main .active.item").removeClass("active");
+					$(this).addClass("active blue");
+					$(".active.obj").removeClass("active");
+					
+					$('.obj').delay(1700).queue(function(next){
+						$(".obj").css("pointer-events","");
+						next();
+					});
+					$('.item.btn').delay(1700).queue(function(next){
+						$(".item.btn").css("pointer-events","");
+						next();
+					});
+					
+				});
+
+			/*****************************************************
+			*					food button generate			 *
+			******************************************************/
+			$(document).on('click','.obj', function(){
+				$('.obj').css('pointer-events',"none");
+				$(this).addClass("inverted");
+				var cupe;
+				//$(this).text().match(showBtn)
+				for(var i=0;i<str.length;i++)
+				{
+					if($(this).text().match(str[i]))
+						cupe = i+1;
+				}
+				var currentPanel = $('#slider').data('movingBoxes').currentPanel(cupe);
+				$('.obj').delay(1700).queue(function(next){
+					$(".obj").css("pointer-events","");
+					next();
+				});
+				$(".obj").delay(1).queue(function(next){
+					$(".tiered .sub .active.obj").css("pointer-events","none");
+					next();
+				});
+				//var currentPanel = $('#slider').data('movingBoxes').currentPanel(2);
+			});
+			
+			/*****************************************************
+			*			boring animation when focus on .obj		 *
+			******************************************************/
+			$(document).on('mouseenter','.obj', function(){
+				event.preventDefault();
+				$(this).transition('pulse')});
+				
+			/*****************************************************
+			*			resize movingBoxes && foodindex	 		 *
+			*			when browser resized					 *
+			******************************************************/
+			var time;
+			$(window).resize(function(){
+				clearTimeout(time);
+				$("#foodindex .segment").animate({height: $(document).height()-220},"slow");
+				var slider = $('#slider').data('movingBoxes');
+				slider.options.width = $(window).width() -200; // make 50% browser width
+				slider.options.panelWidth = 0.55; // make 70% of wrapper width
+				// prevent updating continuously, aka throttle resize
+				time = setTimeout(function(){
+					slider.update(false);
+				}, 100);
+			});
+				
+			
+			//popups
+			$('.item.btn').popup();
+			$('.item.ic').popup();
+			/*********************************************************
+			*			External Arrows								*
+			*********************************************************/
+			$('#goLeft').click(function(){
+				var slider = $('#slider').data('movingBoxes');
+				target = slider.currentPanel();
+				slider.change(target-1);
+			});
+			$('#goRight').click(function(){
+				var slider = $('#slider').data('movingBoxes');
+				target = slider.currentPanel();
+				slider.change(target+1);
+			});
+			
+			/****************************************************
+			*			show the cart sidebar and save data		*
+			*****************************************************/
+			$(document).on('click','#addToCart',function(){
+				window.alert("網路預購已結束囉!\n欲訂購請至二餐,女二攤位洽詢\n感謝您的支持")
+				/*$('.obj').css('pointer-events',"none");
+				$('.tiered .main .item').css('pointer-events',"none");
+				var slider = $('#slider').data('movingBoxes');
+				var product = slider.currentPanel();
+				if(cart[product-1]==1)
+				{
+					window.alert("已經在購物車裡了");
+					return;
+				}
+				$("#foodindex .segment .ui.sidebar.right")
+						.sidebar('show');
+				$('.sidebar .header .content .main').text(str[product-1]);
+				var flavor = [];
+				currentCart = product;
+				switch(product)
+				{
+					case 1:
+						flavor.push("愛文");
+						flavor.push("凱特");
+						flavor.push("水果乾");
+						break;
+					case 2:
+						flavor.push("手指泡芙");
+						break;
+					case 3:
+						flavor.push("可可");
+						flavor.push("芒果");
+						flavor.push("芝麻");
+						flavor.push("鮮奶");
+						break;
+					case 4:
+						flavor.push("檸檬");
+						flavor.push("蔓越莓");
+						flavor.push("芒果");
+						break;
+					case 5:
+						flavor.push("豆干");
+						flavor.push("雞胗");
+						flavor.push("翅小腿");
+						flavor.push("雞翅膀");
+						flavor.push("冰雞爪凍");
+						break;
+					case 6:
+						flavor.push("綜合");
+						flavor.push("花生捲");
+						flavor.push("顆粒花生糖+芝麻軟糖");
+						flavor.push("芝麻軟糖");
+						break;
+					case 7:
+						flavor.push("麥芽餅");
+						break;
+					case 8:
+						flavor.push("瓜瓜園");
+						break;
+					default:
+						window.alert('error');
+						break;
+				}
+				var timer = 1000;
+				$('.clone').remove();
+				$('#category input').val("");
+				$('.sidebar h2').transition('hide').transition('drop',timer);
+				timer +=400;
+				$("#category .tag").text(flavor[0]);
+				$("#category").transition('hide').transition('drop',timer);
+				timer+=400;
+				for(var i=1;i<flavor.length;i++)
+				{
+					var newTag = $("#category").clone();
+					var newDiv = $("#catdiv").clone();
+					newTag.addClass('clone');
+					newDiv.addClass('clone');
+					newTag.contents('.tag').text(flavor[i]);
+					$('.sidebar').append(newDiv);
+					$('.sidebar').append(newTag);
+					newDiv.transition('hide').transition('drop',timer);
+					newTag.transition('hide').transition('drop',timer);
+					timer+=400;
+				}
+				var lastDiv = $("#catdiv").clone();
+				lastDiv.addClass('clone');
+				$('.sidebar').append(lastDiv);
+				lastDiv.transition('hide').transition('drop',timer);
+				timer+=400;
+				newbtn = $('.sidebar .buttons');
+				$('.sidebar').append(newbtn);
+				newbtn.transition('hide').transition('drop',timer);*/
+			});
+			
+			/************************************************
+			*			input number only					*
+			*************************************************/
+			$(document).on('keydown',"#category :input",function (e) {
+					// Allow: backspace, delete, tab, escape, enter and .
+					if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+						 // Allow: Ctrl+A
+						(e.keyCode == 65 && e.ctrlKey === true) ||
+						 // Allow: Ctrl+C
+						(e.keyCode == 67 && e.ctrlKey === true) ||
+						 // Allow: Ctrl+X
+						(e.keyCode == 88 && e.ctrlKey === true) ||
+						 // Allow: home, end, left, right
+						(e.keyCode >= 35 && e.keyCode <= 39)) {
+							 // let it happen, don't do anything
+							 return;
+					}
+					// Ensure that it is a number and stop the keypress
+					if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+						e.preventDefault();
+					}
+			});
+			$(document).on('keydown',".table :input",function (e) {
+					// Allow: backspace, delete, tab, escape, enter and .
+					if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+						 // Allow: Ctrl+A
+						(e.keyCode == 65 && e.ctrlKey === true) ||
+						 // Allow: Ctrl+C
+						(e.keyCode == 67 && e.ctrlKey === true) ||
+						 // Allow: Ctrl+X
+						(e.keyCode == 88 && e.ctrlKey === true) ||
+						 // Allow: home, end, left, right
+						(e.keyCode >= 35 && e.keyCode <= 39)) {
+							 // let it happen, don't do anything
+							 return;
+					}
+					// Ensure that it is a number and stop the keypress
+					if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+						e.preventDefault();
+					}
+			});
+			
+			/************************************************
+			*		save data to cart and 					*
+			*		prevent illegal actions					*
+			*************************************************/
+			$('#cartConfirm').click(function(){
+				var slider = $('#slider').data('movingBoxes');
+				var product = slider.currentPanel();
+				var v = [];
+				$('.sidebar :input').each(function(){v.push($(this).val());});
+				for(var i=0;i<v.length;i++)
+				{
+					if(v[i]<0)
+					{
+						window.alert("請別輸入負數༼ つ ◕_◕ ༽つ");
+						return;
+					}
+					if(v[i]=="")
+					{
+						v[i] = 0;
+					}
+				}
+				var flag = 0;
+				for(var i=0;i<v.length;i++)
+				{
+					if(v[i]!=0)
+						flag = 1;
+				}
+				if(flag==0)
+				{
+					window.alert("你耍我是吧");
+					return;
+				}
+				if(product==3)
+				{
+					var s = 0;
+					for(var a=0;a<v.length;a++)
+					{
+						s+=parseInt(v[a]);
+					}			
+					if(s%3!=0)
+					{
+						window.alert('三個為一組喔~');
+						return;
+					}
+				}
+				switch(currentCart)
+				{
+					case 1:
+						for(var i=0;i<v.length;i++)
+						{
+							mango[i] = v[i];
+						}
+					break;
+					case 2:
+							puff[0] = v[0];
+					break;
+					case 3:
+						for(var i=0;i<v.length;i++)
+						{
+							pudding[i] = v[i];
+						}
+					break;
+					case 4:
+						for(var i=0;i<v.length;i++)
+						{
+							cheeseTower[i] = v[i];
+						}
+					break;
+					case 5:
+						for(var i=0;i<v.length;i++)
+						{
+							snack[i] = v[i];
+						}
+					break;
+					case 6:
+						for(var i=0;i<v.length;i++)
+						{
+							peanut[i] = v[i];
+						}
+					break;
+					case 7:
+						cookies[0] = v[0];
+					break;
+					case 8:
+						yam[0] = v[0];
+					break;
+					default:
+						window.alert('save cart error');
+					break;
+				}
+				cart[currentCart-1] = 1;
+				sumInCart++;
+				if(sumInCart==1)
+				{
+					var f = $("<div class='floating ui red label' id='shopLabel'>"+sumInCart+"</div>");
+					$('.item[name="shop"]').append(f);
+				}
+				else
+				{
+					$('#shopLabel').text(sumInCart);
+				}
+				$(".sidebar").sidebar('hide');
+				$('.obj').css('pointer-events',"");
+				$('.tiered .main .item').css('pointer-events',"");
+			});
+			
+			//	close sidebar when canceled
+			$('#cartCancel').click(function(){
+				$(".sidebar").sidebar('hide');
+				$('.obj').css('pointer-events',"");
+				$('.tiered .main .item').css('pointer-events',"");
+			});
+
+			$('.accordion').accordion();	
+			$('#innershopacc').accordion();			
+			
+			/************************************************
+			* 				查詢訂單						*
+			*************************************************/
+			$('#searchList').click(function(){
+				var searchItem = $(this).parents('.input').find('input').val();
+				if(searchItem.indexOf("*")!=-1||searchItem.indexOf("/")!=-1||searchItem.indexOf("\"")!=-1||searchItem.indexOf("\'")!=-1)
+				{
+					window.alert("請輸入有效電話號碼");
+					$(this).parents('.input').find('input').val("");
+					return;
+				}
+				var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function(){
+						if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+						{
+							var info = xmlhttp.responseText;
+							if(info=="")
+							{
+								window.alert('查無資料༼ つ ◕_◕ ༽つ');
+								return;
+							}
+							var strarray = info.split(">");
+							for(var i=0;i<strarray.length;i++)
+							{
+								var sp = strarray[i].split(",");
+								switch(i)
+								{
+									case 0:
+										for(var j=0;j<sp.length;j++)
+										{
+											data[j] = sp[j];
+										}
+									break;
+									case 1:
+										for(var j=0;j<sp.length;j++)
+										{
+											mango[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 2:
+										for(var j=0;j<sp.length;j++)
+										{
+											puff[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 3:
+										for(var j=0;j<sp.length;j++)
+										{
+											pudding[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 4:
+										for(var j=0;j<sp.length;j++)
+										{
+											cheeseTower[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 5:
+										for(var j=0;j<sp.length;j++)
+										{
+											snack[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 6:
+										for(var j=0;j<sp.length;j++)
+										{
+											peanut[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 7:
+										for(var j=0;j<sp.length;j++)
+										{
+											cookies[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 8:
+										for(var j=0;j<sp.length;j++)
+										{
+											yam[j] = sp[j];
+											if(sp[j]!=0)
+												scart[i-1] = 1;
+										}
+									break;
+									case 9:
+										for(var j=0;j<sp.length;j++)
+										{
+											money = sp[j];
+										}
+									break;
+								}
+							}
+							//window.alert(peanut);
+							$('.shopstep').transition('hide');
+							$('.shopform').transition('hide');
+							$('#shoptable').transition('hide');
+							$('.shopacc').transition('hide');
+							$('.report').transition('hide');
+							$("#yt").hide();
+							$('.fb-comments').css('display','none');
+							if(onloading==0)
+							{
+								$("#foodindex .segment").css("marginRight","3000px");
+								$("#foodindex .segment .wrapper").transition('hide');
+								$('.mbc').transition('hide');
+								$("#foodindex .segment").delay(50).queue(function(next){
+								$("#foodindex .segment").transition('fade down');
+								$("#foodindex .segment").animate({height: hei-220},"slow");
+								$("#foodindex .segment").animate({marginRight: '30px'},"slow");
+									next();
+								});
+								onloading = 1;
+							}
+							else
+							{
+								$("#foodindex .segment .wrapper").transition('hide');
+								$('.mbc').transition('hide');
+								$("#foodindex .segment").animate({height: '1px'},"slow");
+								$("#foodindex .segment").animate({height: hei-220},"slow");
+								onloading = 1;
+							}
+							$("#shopacc .item[name='name'] .description").text(data[0]);
+							$("#shopacc .item[name='studentid'] .description").text(data[1]);
+							$("#shopacc .item[name='department'] .description").text(data[2]);
+							$("#shopacc .item[name='grade'] .description").text(data[3]);
+							$("#shopacc .item[name='email'] .description").text(data[4]);
+							$("#shopacc .item[name='cellphone'] .description").text(data[5]);
+							$("#shopacc .item[name='dorm'] .description").text(data[6]);
+							$("#shopacc .item[name='room'] .description").text(data[7]);
+							$('#innershopmoney').text(money);
+							$('.dy').remove();
+							var title = $("<div class='title dy'><div>");
+							var content = $("<div class='content dy'><div>");
+							for(var i=0;i<8;i++)
+							{
+								if(scart[i]==1)
+								{
+									var ntitle = title.clone().text(str[i]);
+									var ncontent = content.clone();
+									switch(i)
+									{
+										case 0:
+											var s = "愛文: " + mango[0] +" | 凱特: "+mango[1]+" | 綜合: "+mango[2];
+											ncontent.text(s);
+										break;
+										case 1:
+											var s = "手指泡芙: " + puff[0];
+											ncontent.text(s);
+										break;
+										case 2:
+											var s = "可可: " + pudding[0] +" | 芒果: "+pudding[1]+" | 芝麻: "+pudding[2]+" | 鮮奶: "+pudding[3];
+											ncontent.text(s);
+										break;
+										case 3:
+											var s = "檸檬: " + cheeseTower[0] +" | 蔓越莓: "+cheeseTower[1]+" | 芒果: "+cheeseTower[2];
+											ncontent.text(s);
+										break;
+										case 4:
+											var s = "豆干: " + snack[0] +" | 雞胗: "+snack[1]+" | 翅小腿: "+snack[2]+" | 雞翅膀: "+snack[3]+" | 冰雞爪凍: "+snack[4];
+											ncontent.text(s);
+										break;
+										case 5:
+											var s = "綜合: " + peanut[0] +" | 花生捲: "+peanut[1]+" | 顆粒花生糖+芝麻軟糖: "+peanut[2]+" | 芝麻軟糖: "+peanut[3];
+											ncontent.text(s);
+										break;
+										case 6:
+											var s = "麥芽餅: " + cookies[0];
+											ncontent.text(s);
+										break;
+										case 7:
+											var s = "瓜瓜園: " + yam[0];
+											ncontent.text(s);
+										break;
+									}
+									$('#innershopacc').append(ntitle);
+									$('#innershopacc').append(ncontent);
+									
+								}
+							}
+							$('#shopacc').delay(1000).queue(function(next){
+								$('#s2').removeClass('active');
+								$('#s2').addClass('completed');
+								$('#s3').addClass('active');
+								$('#s3').removeClass('disabled');
+								$('#shopacc').transition('hide').transition({
+								animation: 'scale',
+								duration : '1s'
+								});
+								$('#changeList').transition('hide').transition({
+								animation: 'scale',
+								duration : '1s'
+								});
+								next();
+							});
+						}
+					}
+					xmlhttp.open("GET", "search.php?tele=" + searchItem, true);
+					xmlhttp.send();
+			});
+		
+			$('#changeList').click(function(){
+			});
+			
+			
+		});
+		
+		</script>
+	</head>
+	<body>
+		<script>
+		  window.fbAsyncInit = function() {
+			FB.init({
+			  appId      : '1636343679918301',
+			  xfbml      : true,
+			  version    : 'v2.3'
+			});
+		  };
+
+		  (function(d, s, id){
+			 var js, fjs = d.getElementsByTagName(s)[0];
+			 if (d.getElementById(id)) {return;}
+			 js = d.createElement(s); js.id = id;
+			 js.src = "//connect.facebook.net/en_US/sdk.js";
+			 fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+		</script>
+		<div id="fb-root"></div>
+		
+		<div id="topic" class="ui grid">
+			<div class="two wide column">
+				<a class="ui small circular image" href="./index.html">
+						<img src="images/logo.png">
+				</a>
+			</div>
+			<div class="fourteen wide column">
+				<div class="ui t piled segment">
+					<div class="ui tiered menu">
+						<div class="ui main green inverted menu" style="text-align:center">
+							<!--<a class="active blue item btn">
+								<i class="home icon"></i> Home
+							</a>-->
+							<a class="item btn food">
+								<i class="shipping icon"></i> 訂購商品
+							</a>
+							<a class="item btn pop" data-content="Coming Soon!" data-variation="huge">
+								<i class="food icon"></i> 熟食
+							</a>
+							<a class="item ic" name="shop" data-content="網路預購已結束囉!欲訂購請至二餐,女二攤位洽詢!感謝您的支持!" data-variation="large">
+								<i class="in cart icon"></i>
+							</a>
+							<a class="item ic" name="fb" data-content="Sharing with your friends!" data-variation="large">
+								<i class="facebook square icon"></i>
+							</a>
+							<a class="item ic" name="comment" data-content="聯絡我們" data-variation="large">
+								<i class="comments outline icon"></i>
+							</a>
+							<div class="right menu">
+								<div class="ui dropdown item" style="text-align:center" >
+									<div class="text">
+										<i class="bar chart icon"></i>
+										訂單選項
+									</div>
+									<i class="dropdown icon"></i>
+									<div class="menu">
+										<div class="ui left icon action input">
+											<input type="text" placeholder="輸入電話...">
+											<i class="users icon"></i>
+												<button class="ui teal right labeled icon button" id="searchList">
+												<i class="search icon"></i>
+												查詢訂單
+											  </button>
+										</div>
+										<div>
+										</div>
+										<div
+										  class="fb-like item"
+										  data-share="true"
+										  data-width="450"
+										  data-show-faces="true">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ui sub menu">
+							<div class="ui menu">
+								<a class="subBaseObject"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="foodindex">
+			<div class="ui segment" style="text-align:center">
+				<div class="ui wide right slide out sidebar">
+					<h2 class="ui orange header">
+						<div class="ui active inline loader" style="margin-top:5px"></div>
+						<div class="content">
+							<div class="main"></div>
+							<div class="ui sub yellow header">好吃的東西不嫌多~</div>
+						</div>
+					</h2>
+					<h4 class="ui inverted horizontal divider" id="catdiv">
+						<i class="chevron down icon"></i>
+					</h4>
+					<div class="ui right labeled left icon input" id="category">
+						<i class="block layout icon"></i>
+						<input type="number" placeholder="輸入數量...">
+						<div class="ui tag label">
+							Tags
+						</div>
+					</div>
+					<div class="ui buttons">
+						<div class="ui button" id="cartCancel">取消</div>
+						<div class="or" data-text="O"></div>
+						<div class="ui positive button" id="cartConfirm">加入購物車</div>
+					</div>
+				</div>
+			<div class="pusher">
+				<div class="ui buttons mbc" style="text-align:center">
+					<div class="ui green animated left labeled icon button" id="goLeft">
+						<div class="visible content">
+							<i class="chevron circle left icon"></i>
+							Previous
+						</div>
+						<div class="hidden content">
+							<i class="arrow left icon"></i>
+						</div>
+					</div>
+					<div class="ui blue animated fade button" id="addToCart">
+						<div class="visible content">
+							加入購物車
+						</div>
+						<div class="hidden content">
+							<i class="add to cart icon"></i>
+						</div>
+					</div>
+					<div class="ui green animated right labeled icon button" id="goRight">
+						<div class="visible content">
+							Next
+							<i class="chevron circle right icon"></i>
+						</div>
+						<div class="hidden content">
+							<i class="arrow right icon"></i>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper">
+					<div id="slider">
+						<div>
+							<img src="foodPic/1.jpg" alt="picture">
+							<!--<h2>News Heading - <span>Lisa</span></h2>
+							<p>Add a short exerpt here... <a href="http://flickr.com/photos/fensterbme/499006584/">more</a></p>
+							<p>Add a short exerpt here... <a href="http://flickr.com/photos/fensterbme/499006584/">more</a></p>
+							<p>Add a short exerpt here... <a href="http://flickr.com/photos/fensterbme/499006584/">more</a></p>
+							<p>Add a short exerpt here... <a href="http://flickr.com/photos/fensterbme/499006584/">more</a></p>-->
+						</div>
+						
+						<div >
+							<img src="foodPic/2.jpg" alt="picture">
+						</div>
+						<div>
+							<img src="foodPic/3.jpg" alt="picture">
+						</div>
+
+						<div>
+							<img src="foodPic/4.jpg" alt="picture">
+						</div>
+						<div>
+							<img src="foodPic/5.jpg" alt="picture">
+						</div>
+						
+						<div>
+							<img src="foodPic/6.jpg" alt="picture">
+						</div>
+						<div>
+							<img src="foodPic/7.jpg" alt="picture">
+						</div>
+						
+						<div>
+							<img src="foodPic/8.jpg" alt="picture">
+						</div>
+					</div>
+				</div>
+				<div class='ui three steps shopstep' id='step'>
+					<div class='active step' id='s1'><i class='add user icon'></i><div class='content'><div class='title'>基本資料</div><div class='description'>請填入資本資料以利辨識</div></div></div>
+					<div class='disabled step' id='s2'><i class='table icon'></i><div class='content'><div class='title'>訂單變更</div><div class='description'>如欲新增、刪除項目請利用下方按鈕</div></div></div>
+					<div class='disabled step' id='s3'><i class='paw icon'></i><div class='content'><div class='title'>確認訂單</div><div class='description'>請再次確認有沒有錯誤呦</div></div></div>
+				</div>
+				<!--  step 1    -->
+				<div class='ui indicating teal progress shopform' id='prog'><div class='bar'><div class='progress'></div></div></div>
+				<div class='ui form shopform'>
+					<h4 class='ui dividing header'>Personal Information</h4>
+					<div class='fields'>
+						<div class='five wide field'>
+							<div class="ui large purple pointing below label n">Name</div>
+							<div class="ui input">
+								<input type='text' placeholder='Full Name...' name='name'>
+							</div>
+						</div>
+						<div class='five wide field'>
+							<div class="ui large purple pointing below label n">Student ID</div>
+							<div class="ui input">
+								<input type='text' placeholder='Student ID...' name='id'>
+							</div>
+						</div>
+						<div class='three wide field'>
+							<div class="ui large purple pointing below label n">Department</div>
+							<div class="ui input">
+								<input type='text' placeholder='Department...' name='department'>
+							</div>
+						</div>
+						<div class='three wide field'>
+							<div class="ui large purple pointing below label n">Grade</div>
+							<div class="ui input">
+								<input type='text' placeholder='Grade...' name='grade'>
+							</div>
+						</div>
+					</div>
+					<h4 class='ui dividing header'>聯絡資料</h4>
+					<div class='fields'>
+						<div class='six wide field'>
+							<div class="ui large purple pointing below label n">E-mail</div>
+							<div class="ui input">
+								<input type='text' placeholder='Email...' name='email'>
+							</div>
+						</div>
+						<div class='four wide field'>
+							<div class="ui large purple pointing below label n">Cell Phone</div>
+							<div class="ui input">
+								<input type='text' placeholder='Cell Phone...' name='phone'>
+							</div>
+						</div>
+						<div class='three wide field'>
+							<div class="ui large purple pointing below label n">Dorm</div>
+							<div class="ui input">
+								<input type='text' placeholder='Dorm...' name='dorm'>
+							</div>
+						</div>
+						<div class='three wide field'>
+							<div class="ui large purple pointing below label n">Room</div>
+							<div class="ui input">
+								<input type='text' placeholder='Room...' name='dorm'>
+							</div>
+						</div>
+					</div>
+					<h4 class='ui dividing header'></h4>
+					<div class='ui blue button' id='infosub'>Submit</div>
+				</div>
+				<!--  step 2    -->
+				<table class="ui compact celled structured table" id="shoptable">
+					<thead>
+						<tr>
+							<th rowspan="2">商品名稱</th>
+							<th rowspan="2"><i class="shop big icon"></i></th>
+							<th colspan="60"><i class="quote left big icon"></i>各項口味數量<i class="quote right big icon"></i></th>
+							<th rowspan="2"><i class="calculator big icon"></i></th>
+							<th rowspan="2"><i class="dollar big icon"></i></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>芒果乾</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="20">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">愛文</div>
+								</div>
+							</td>
+							<td colspan="20">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">凱特</div>
+								</div>
+							</td>
+							<td colspan="20">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">水果乾</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>手指泡芙</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="60">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">手指泡芙</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>依蕾特布丁</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">可可</div>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">芒果</div>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">芝麻</div>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">鮮奶</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>依蕾特乳酪塔</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="20">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">檸檬</div>
+								</div>
+							</td>
+							<td colspan="20">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">蔓越莓</div>
+								</div>
+							</td>
+							<td colspan="20">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">芒果</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>西井村滷味</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="12">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">豆干</div>
+								</div>
+							</td>
+							<td colspan="12">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">雞胗</div>
+								</div>
+							</td>
+							<td colspan="12">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">翅小腿</div>
+								</div>
+							</td>
+							<td colspan="12">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">雞翅膀</div>
+								</div>
+							</td>
+							<td colspan="12">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">冰雞爪凍</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>大灣花生糖</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">綜合</div>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">花生捲</div>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">花生+芝麻</div>
+								</div>
+							</td>
+							<td colspan="15">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">芝麻軟糖</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>章成麥芽餅</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="60">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">麥芽餅</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+						<tr>
+							<td>瓜瓜園</td>
+							<td>
+								<div class="ui toggle checkbox">
+									<input type="checkbox">
+									<label></label>
+								</div>
+							</td>
+							<td colspan="60">
+								<div class="ui fluid corner labeled input">
+									<input type="text" placeholder="數量...">
+									<div class="ui corner label">瓜瓜園</div>
+								</div>
+							</td>
+							<td class="ctotal"></td>
+							<td class="mtotal"></td>
+						</tr>
+					</tbody>
+					<tfoot class="full-width">
+						<tr>
+							<th colspan="62">
+								<div class="2 fluid ui buttons">
+									<div class="ui negative button" id="tableBack">回上一步</div>
+									<div class="or">or</div>
+									<div class="ui positive button" id="tableConfirm">結帳</div>
+								</div>
+							</th>
+							<th colspan="2" id="Totalmoney">
+								總金額:
+							</th>
+						</tr>
+					</tfoot>
+				</table>
+				<!--  step 3    -->
+				<div class="ui fluid styled accordion shopacc" id="shopacc">
+					<div class="active title">
+						<i class="dropdown icon"></i>
+						個人資料
+					</div>
+					<div class="active content">
+						<div class="ui divided list">
+							<div class="item" name="name">
+								<i class="user icon"></i>
+								<a class="header">Name</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="studentid">
+								<i class="student icon"></i>
+								<a class="header">Student ID</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="department">
+								<i class="building icon"></i>
+								<a class="header">department</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="grade">
+								<i class="columns icon"></i>
+								<a class="header">grade</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="email">
+								<i class="mail icon"></i>
+								<a class="header">E-mail</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="cellphone">
+								<i class="call icon"></i>
+								<a class="header">Cell Phone</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="dorm">
+								<i class="building outline icon"></i>
+								<a class="header">Dorm</a>
+								<div class="description"></div>
+							</div>
+							<div class="item" name="room">
+								<i class="map marker icon"></i>
+								<a class="header">Room</a>
+								<div class="description"></div>
+							</div>
+						</div>
+					</div>
+					<div class="title">
+						<i class="dropdown icon"></i>
+						訂單內容
+					</div>
+					<div class="content">
+						<div class="ui fluid styled accordion" id="innershopacc">
+						</div>
+					</div>
+					<div class="title">
+						<i class="dropdown icon"></i>
+						總金額
+					</div>
+					<div class="content">
+						<div class="item" id="innershopmoney">
+						</div>
+					</div>
+				</div>
+				<div class="2 fluid ui buttons shopacc">
+					<div class="ui negative button" id="accBack">回上一步</div>
+					<div class="or">or</div>
+					<div class="ui positive button" id="allConfirm">確認訂購</div>
+				</div>
+			
+				
+			</div>
+			</div>
+		</div>
+		<div id="yt">
+		<iframe width="1120" height="630" src="https://www.youtube.com/embed/wQDfUewiCwA" frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div class="fb-comments" data-href="http://people.cs.nctu.edu.tw/~cwlin6104400/index.html" data-numposts="5" data-colorscheme="light"></div>
+		<div class="ui basic modal" id="warn">
+		  <i class="close icon"></i>
+		  <div class="header">
+			您已經下過訂單囉!
+		  </div>
+		  <div class="content">
+			<div class="image">
+			  <i class="archive icon"></i>
+			</div>
+			<div class="description">
+			  <p>只要再一次送出訂單便會自動修改訂單，是否要修改?</p>
+			</div>
+		  </div>
+		  <div class="actions">
+			<div class="two fluid ui inverted buttons">
+			  <div class="ui red basic inverted deny button">
+				<i class="remove icon"></i>
+				No
+			  </div>
+			  <div class="ui green basic inverted approve button">
+				<i class="checkmark icon"></i>
+				Yes
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="ui basic modal" id="finalConfirm">
+			  <i class="close icon"></i>
+			  <div class="header">
+				最後確認
+			  </div>
+			  <div class="content">
+				<div class="image">
+				  <i class="text telephone icon"></i>
+				</div>
+				<div class="description">
+				  <p>訂單送出後不論查詢或修改皆以手機號碼為依據</p>
+				  <p>請再一次確認以下手機號碼無誤</p>
+				  <p>如有誤請返回第一步修改</p>
+				  <h2 id="phone"></h2>
+				</div>
+			  </div>
+			  <div class="actions">
+				<div class="two fluid ui inverted buttons">
+				  <div class="ui red basic inverted button">
+					<i class="remove icon"></i>
+					修改
+				  </div>
+				  <div class="ui green basic inverted approve button">
+					<i class="checkmark icon"></i>
+					送出訂單
+				  </div>
+				</div>
+			  </div>
+		</div>
+		<!--Comments-->
+		<div class="ui modal" id="report" style="height: 370px">
+				<form class="ui form">
+					<div class="fields">
+						<div class="twelve wide field">
+							<label>標題</label>
+							<input type="text" name="tit">
+						</div>
+						<div class="four wide field">
+						  <label>類型</label>
+						  <div class="ui selection dropdown">
+								<input type="hidden" name="reportType">
+								<div class="default text">類型</div>
+								<i class="dropdown icon"></i>
+								<div class="menu">
+								  <div class="item" data-value="bug">bug回報</div>
+								  <div class="item" data-value="report">給我們意見</div>
+								</div>
+						  </div>
+						</div>
+					</div>
+					<div class="field">
+						<label>內容</label>
+						<textarea></textarea>
+					  </div>
+				</form>
+			<div class="ui approve primary button">
+					  Report!
+					</div>
+					<div class="ui deny button">
+					  Cancel
+					</div>
+		</div>
+	</body>
+</html>

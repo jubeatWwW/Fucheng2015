@@ -1,0 +1,152 @@
+/*index*/
+body{
+	height: 100vh;
+	background-image: url("abstract_background3.jpg");
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-position: top center !important;
+	background-repeat: no-repeat !important;
+	background-attachment: fixed;
+}
+#topic .image{
+	margin-top: 20px;
+	margin-left:30px;
+}
+#topic .segment{
+	margin-top: 30px;
+	margin-left: 10px;
+	margin-right: 30px;
+
+}
+#foodindex .segment{
+	overflow: scroll;
+	margin-left: 30px;
+	margin-top: 20px;
+	margin-right: 3000px;
+	background: rgba(42,244,244,0.5);
+}
+/*#topic .piled.segment{
+	background: black;
+}*/
+.sidebar{
+	background: rgba(39,41,43,1);
+}
+#topic .sub.menu{
+	background: rgba(255,255,255,0.7);
+}
+#topic .active.item{
+	background: rgba(255,255,255,0.7);
+}
+/*#topic .item{
+	width: 300px;
+	height: 100px;
+}*/
+#topic .inverted.tiered.menu{
+	height: 200px;
+}
+.obj{
+	width: 25%;
+}
+.btn{
+	width: 30%;
+}
+.ic{
+	width: 3%;
+}
+.right.menu{
+	width: 31%;
+}
+.dropdown.item{
+	width: 100%;
+}
+#nextsegment .segment{
+	position: absolute;
+	left: 30px;
+	right: 30px;
+	bottom: 10px;
+	
+}
+#topic .piled.segment{
+	background-color: rgba(20, 71, 0, 0.5);
+}
+#slider{
+	background: rgba(172,241,193,0.3);
+}
+.wrapper{
+	margin-top: 20px;
+}
+.ui.segment.transition.visible
+{	
+	height: 650px
+}
+.wrapper img{
+	
+}
+#slider img { position: relative; top: 0;
+    width: auto !important; /* At all times this stays originally wide */
+    max-width: none !important /* At all times this stays originally wide */ }
+
+.mb-inside { text-align: center; overflow: hidden}
+
+.mb-inside {border: none}
+.mb-panel {overflow: hidden; border: 1px solid #999; margin: 0 5px !important}
+
+.dropdown .input{
+	width: 90%;
+}
+.dropdown .text{
+	float: center;
+}
+
+#slider div{
+	background: rgba(0,0,0,0.3);
+
+}
+
+.form{
+	margin-left:30px;
+	margin-right: 30px;
+}
+
+#prog{
+	margin-left: 30px;
+	margin-right: 30px;
+	margin-top: 30px;
+}
+#step
+{
+	/*margin-left: 30px;
+	margin-right: 30px;*/
+	margin-top: 30px;
+}
+#shoptable{
+	margin-left: auto;
+    margin-right: auto;
+	margin-top: 10px;
+}
+#shopacc{
+	margin-left: auto;
+    margin-right: auto;
+	margin-top: 10px;
+}
+.fb-comments{
+	margin-left:30px;
+}
+#yt{
+	float: left;
+	margin-left:30px;
+	margin-top:30px;
+}
+#report .button{
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 30px;
+	float: center;
+}
+#report .form{
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 30px;
+	float: center;
+}
